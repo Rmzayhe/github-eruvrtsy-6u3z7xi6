@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="400" cy="400" r="400" fill="#031a69"/>
+  <circle cx="400" cy="400" r="380" fill="#000000"/>
+  <path d="M 400,50 L 750,750 H 50 Z" fill="#031a69"/>
+  <circle cx="400" cy="400" r="150" fill="#ffffff"/>
+  <g transform="translate(300,300)">
+    <path d="M 100,0 L 150,100 H 50 Z" fill="#eb1515"/>
+    <path d="M 100,20 L 130,80 H 70 Z" fill="#f5b910"/>
+  </g>
+  <text x="400" y="200" text-anchor="middle" fill="#ffffff" font-family="Arial Black" font-size="80">SOKRAT</text>
+  <text x="400" y="650" text-anchor="middle" fill="#ffffff" font-family="Arial" font-size="60">YMC IMMIGRATION</text>
+</svg>

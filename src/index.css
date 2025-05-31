@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply font-sans text-gray-800 bg-white antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold text-primary-500;
+  }
+
+  img {
+    @apply max-w-full h-auto;
+  }
+
+  /* Arabic text alignment and font adjustments */
+  html[dir="rtl"] body {
+    font-family: 'Noto Sans Arabic', sans-serif;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+  
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-md transition-all duration-200 font-medium;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-500 text-white hover:bg-primary-600 focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-2 focus:ring-secondary-500 focus:ring-opacity-50;
+  }
+  
+  .btn-outline {
+    @apply border border-primary-500 text-primary-500 hover:bg-primary-50 focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold mb-8 text-primary-500 relative;
+  }
+  
+  .section-title::after {
+    content: "";
+    @apply absolute bottom-0 left-0 h-1 w-16 bg-secondary-500 mt-2;
+  }
+
+  /* RTL support for section titles */
+  html[dir="rtl"] .section-title::after {
+    @apply right-0 left-auto;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg;
+  }
+  
+  .country-card {
+    @apply card relative overflow-hidden;
+  }
+  
+  .country-card-flag {
+    @apply absolute top-4 right-4 w-10 h-10 rounded-full object-cover border-2 border-white shadow-md;
+  }
+
+  /* RTL support for country card flags */
+  html[dir="rtl"] .country-card-flag {
+    @apply left-4 right-auto;
+  }
+  
+  .service-card {
+    @apply card p-6 flex flex-col items-center text-center;
+  }
+  
+  .service-icon {
+    @apply text-primary-500 mb-4 h-12 w-12;
+  }
+
+  /* Language toggle button */
+  .language-toggle {
+    @apply flex items-center space-x-2 px-3 py-2 rounded-md border border-gray-200 hover:bg-gray-50 transition-colors;
+  }
+
+  html[dir="rtl"] .language-toggle {
+    @apply space-x-reverse;
+  }
+  
+  /* Menu animation */
+  .menu-enter {
+    @apply opacity-0 -translate-y-4;
+  }
+  
+  .menu-enter-active {
+    @apply opacity-100 translate-y-0 transition-all duration-300;
+  }
+  
+  .menu-exit {
+    @apply opacity-100 translate-y-0;
+  }
+  
+  .menu-exit-active {
+    @apply opacity-0 -translate-y-4 transition-all duration-300;
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 640px) {
+    .country-card {
+      @apply mx-auto max-w-sm;
+    }
+    
+    .country-card-content {
+      @apply p-4;
+    }
+    
+    .btn {
+      @apply px-4 py-2 text-sm;
+    }
+    
+    .section-title {
+      @apply text-2xl;
+    }
+  }
+}
