@@ -5,12 +5,21 @@ import { X } from 'lucide-react';
 import { getCountryById } from '../data/countries';
 import { useLanguage } from '../hooks/useLanguage';
 
+// صور رومانيا فقط
 const romaniaWorkImages = [
   'https://i.ibb.co/XrHxXB6S/Jobs-20250421-115827-0000.webp',
   'https://i.ibb.co/KxW1G5Ng/Jobs-20250421-115827-0002.webp',
   'https://i.ibb.co/jvPsvzYh/Jobs-20250421-115827-0004.webp',
   'https://i.ibb.co/mVGcr1CX/Jobs-20250421-115827-0005.webp',
 ];
+
+// الوصف الثابت للصور (يُعرض تحت شريط الصور)
+const romaniaWorkDescription = {
+  en: `Romania offers diverse work environments ranging from modern offices to industrial settings.
+Enjoy collaborative teams, training sessions, and a balanced work lifestyle.`,
+  ar: `تقدم رومانيا بيئات عمل متنوعة من مكاتب حديثة إلى بيئات صناعية.
+استمتع بالعمل الجماعي، جلسات التدريب، ونمط حياة متوازن.`,
+};
 
 const CountryPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,10 +28,7 @@ const CountryPage: React.FC = () => {
 
   const country = getCountryById(id || '');
 
-  // Lightbox state
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-
-  // Ref for drag container and max drag distance
   const containerRef = useRef<HTMLDivElement>(null);
   const [maxDrag, setMaxDrag] = useState(0);
 
@@ -63,30 +69,27 @@ const CountryPage: React.FC = () => {
     }
   };
 
-  // Render images for Romania with horizontal drag and lightbox
+  // *** شريط الصور مع السحب ***
   const renderRomaniaImages = () => (
-    <div className="space-y-6">
-      <h3 className="text-xl font-semibold text-primary-600 mb-4">
-        {language === 'en' ? 'Work Opportunities' : 'فرص العمل'}
-      </h3>
+    <div className="space-y-4">
       <motion.div
         ref={containerRef}
-        className="flex space-x-4 overflow-x-hidden cursor-grab py-2 px-1"
+        className="flex space-x-4 overflow-hidden cursor-grab py-2 px-1"
         drag="x"
         dragConstraints={{ left: -maxDrag, right: 0 }}
-        dragElastic={0.2}
+        dragElastic={0.15}
       >
         {romaniaWorkImages.map((src, idx) => (
           <motion.div
             key={idx}
-            className="flex-shrink-0 w-40 h-24 rounded-lg overflow-hidden shadow-lg cursor-pointer border border-gray-200 hover:shadow-xl transition-shadow"
+            className="flex-shrink-0 w-48 rounded-lg overflow-hidden shadow-lg cursor-pointer border border-gray-200 hover:shadow-xl transition-shadow"
             onClick={() => setLightboxIndex(idx)}
             whileHover={{ scale: 1.05 }}
           >
             <img
               src={src}
-              alt={`Work environment ${idx + 1}`}
-              className="w-full h-full object-cover"
+              alt={`Romania Work Image ${idx + 1}`}
+              className="w-full h-28 object-cover"
               loading="lazy"
               draggable={false}
             />
@@ -94,6 +97,12 @@ const CountryPage: React.FC = () => {
         ))}
       </motion.div>
 
+      {/* وصف نصي ثابت تحت الصور */}
+      <p className="text-gray-700 dark:text-gray-300 text-base max-w-3xl mx-auto px-2 text-center whitespace-pre-line">
+        {language === 'en' ? romaniaWorkDescription.en : romaniaWorkDescription.ar}
+      </p>
+
+      {/* نافذة التكبير */}
       <AnimatePresence>
         {lightboxIndex !== null && (
           <motion.div
@@ -106,7 +115,7 @@ const CountryPage: React.FC = () => {
             <motion.img
               key={romaniaWorkImages[lightboxIndex]}
               src={romaniaWorkImages[lightboxIndex]}
-              alt={`Zoomed work environment ${lightboxIndex + 1}`}
+              alt={`Romania Work Image ${lightboxIndex + 1}`}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
@@ -148,7 +157,6 @@ const CountryPage: React.FC = () => {
     </div>
   );
 
-  // Render images for other countries (simple grid)
   const renderDefaultImages = () => {
     if (!country.images) return null;
 
