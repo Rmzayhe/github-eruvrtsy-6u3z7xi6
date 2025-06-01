@@ -160,7 +160,7 @@ export const countries: Country[] = [
         titleAr: '✈️ برنامج جورجيا السياحي – 5 أيام أو أكثر 🇬🇪',
         description: 'Comprehensive tourism package with all-inclusive services.',
         descriptionAr: `استمتع برحلة لا تُنسى مع خدمات متكاملة ومميزة:
-
+        
 ✅ الاستقبال والتوديع من وإلى المطار
 ✅ حجوزات فنادق راقية مع وجبة إفطار يومية مفتوحة
 ✅ جولات سياحية يومية حسب البرنامج
@@ -227,4 +227,44 @@ export const countries: Country[] = [
         id: 'albania-visa-jobs',
         title: 'Albania Visa & Employment Program',
         titleAr: 'برنامج تأشيرة وعمل ألبانيا',
-        description
+        description: 'Visa and work opportunities in Albania. Assistance with visa processing and job placement in various sectors for qualified applicants.',
+        descriptionAr: 'فرص التأشيرة والعمل في ألبانيا. المساعدة في إجراءات التأشيرة والتوظيف في قطاعات متنوعة للمتقدمين المؤهلين.',
+        requirements: [
+          'Valid passport',
+          'Visa application',
+          'Proof of funds',
+          'Good health condition',
+          'No criminal record'
+        ],
+        requirementsAr: [
+          'جواز سفر ساري المفعول',
+          'تقديم طلب التأشيرة',
+          'إثبات القدرة المالية',
+          'حالة صحية جيدة',
+          'سجل جنائي نظيف'
+        ],
+        benefits: [
+          'Easy process',
+          'Full support',
+          'Legal stay and work rights',
+          'Assistance with accommodation',
+          'Healthcare guidance'
+        ],
+        benefitsAr: [
+          'إجراءات سهلة',
+          'دعم كامل',
+          'إقامة وعمل قانوني',
+          'مساعدة في السكن',
+          'إرشاد صحي'
+        ],
+        timeline: '1-2 months processing time',
+        timelineAr: '1-2 شهر وقت المعالجة',
+        images: {
+          work: [
+            'https://images.pexels.com/photos/1549326/pexels-photo-1549326.jpeg'
+          ]
+        }
+      }
+    ]
+  }
+];
