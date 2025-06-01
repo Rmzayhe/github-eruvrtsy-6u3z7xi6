@@ -92,8 +92,7 @@ export const countries: Country[] = [
     nameAr: 'فرص العمل في رومانيا',
     flagUrl: 'https://flagcdn.com/ro.svg',
     imageUrl: 'https://images.pexels.com/photos/3862627/pexels-photo-3862627.jpeg',
-    // تم تعديل الصورة هنا إلى صورة بوخارست الجديدة
-    capitalImageUrl: 'https://images.pexels.com/photos/218983/pexels-photo-218983.jpeg', // صورة بوخارست
+    capitalImageUrl: 'https://images.pexels.com/photos/3862130/pexels-photo-3862130.jpeg',
     description: 'Discover exciting job opportunities in Romania with trusted companies and reputable employers.',
     descriptionAr: 'اكتشف فرص عمل مميزة في رومانيا مع شركات موثوقة وأصحاب عمل ذوي سمعة طيبة',
     programs: [
@@ -215,7 +214,6 @@ export const countries: Country[] = [
       }
     ]
   },
-  // باقي الدول بدون تغيير
   {
     id: 'albania',
     name: 'Albania Immigration',
@@ -223,4 +221,10 @@ export const countries: Country[] = [
     flagUrl: 'https://flagcdn.com/al.svg',
     imageUrl: 'https://images.pexels.com/photos/1549326/pexels-photo-1549326.jpeg',
     description: 'Explore opportunities in Albania with our comprehensive visa and employment services.',
-    descriptionAr: 'اكتشف الفرص في ألبانيا مع خدمات التأش
+    descriptionAr: 'اكتشف الفرص في ألبانيا مع خدمات التأشيرات والتوظيف الشاملة لدينا',
+    programs: [
+      {
+        id: 'albania-visa-jobs',
+        title: 'Albania Visa & Employment Program',
+        titleAr: 'برنامج تأشيرة وعمل ألبانيا',
+        description
