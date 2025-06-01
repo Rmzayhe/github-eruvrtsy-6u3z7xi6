@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,19 +18,17 @@ const CountryPage = () => {
   const { t, language } = useLanguage();
   const country = getCountryById(id || '');
 
-  // State for lightbox (image zoom)
+  // Lightbox state
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  // Close lightbox
+  // Lightbox close
   const closeLightbox = () => setLightboxIndex(null);
 
-  // Navigate images in lightbox
+  // Navigate lightbox images
   const goNext = () => {
     if (lightboxIndex === null) return;
     if (id === 'romania') {
       setLightboxIndex((lightboxIndex + 1) % romaniaWorkImages.length);
-    } else if (country?.programs?.length) {
-      // fallback: do nothing
     }
   };
   const goPrev = () => {
@@ -40,11 +38,22 @@ const CountryPage = () => {
     }
   };
 
-  // Modified renderImages for Romania with horizontal scroll + zoom
+  // Ref and state for drag constraints (romania images)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [maxDrag, setMaxDrag] = useState(0);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const contentWidth = containerRef.current.scrollWidth;
+      setMaxDrag(contentWidth - containerWidth > 0 ? contentWidth - containerWidth : 0);
+    }
+  }, [romaniaWorkImages.length]);
+
+  // Render images with horizontal scroll and zoom for Romania
   const renderImages = (images?: { work?: string[]; tourism?: string[] }) => {
     if (!images) return null;
 
-    // If Romania, override work images with provided links & horizontal layout
     if (id === 'romania') {
       return (
         <div className="space-y-6">
@@ -53,11 +62,11 @@ const CountryPage = () => {
           </h3>
           <div className="relative">
             <motion.div
-              className="flex space-x-4 overflow-x-auto py-2 px-1"
+              ref={containerRef}
+              className="flex space-x-4 overflow-x-hidden py-2 px-1 cursor-grab"
               drag="x"
-              dragConstraints={{ left: -1000, right: 0 }}
+              dragConstraints={{ left: -maxDrag, right: 0 }}
               dragElastic={0.2}
-              style={{ cursor: 'grab' }}
             >
               {romaniaWorkImages.map((img, index) => (
                 <motion.div
@@ -77,6 +86,7 @@ const CountryPage = () => {
               ))}
             </motion.div>
           </div>
+
           {/* Lightbox */}
           <AnimatePresence>
             {lightboxIndex !== null && (
@@ -129,7 +139,8 @@ const CountryPage = () => {
               </motion.div>
             )}
           </AnimatePresence>
-          {/* If tourism images exist, render them normally as before */}
+
+          {/* Tourism images (if any) */}
           {images.tourism && (
             <div className="space-y-6 mt-12">
               <h3 className="text-xl font-semibold text-primary-600">
@@ -242,162 +253,4 @@ const CountryPage = () => {
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-      },
-    },
-  };
-
-  return (
-    <div className="pt-24">
-      {/* Country Header */}
-      <div
-        className="relative h-80 bg-cover bg-center"
-        style={{ backgroundImage: `url(${country.imageUrl})` }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70">
-          <div className="container-custom h-full flex flex-col justify-center">
-            <button
-              onClick={() => navigate('/')}
-              className="flex items-center text-white mb-4 hover:text-accent-500 transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5 mr-2" />
-              {t('nav.home')}
-            </button>
-            <div className="flex items-center">
-              <img
-                src={country.flagUrl}
-                alt={`${country.name} flag`}
-                className="w-16 h-16 rounded-full border-2 border-white shadow-lg mr-4"
-              />
-              <h1 className="text-4xl md:text-5xl font-bold text-white">
-                {language === 'en' ? country.name : country.nameAr}
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Program Images */}
-      <div className="bg-gray-50 py-12">
-        <div className="container-custom">
-          {country.programs.map((program) => (
-            <div key={program.id} className="mb-12 last:mb-0">
-              {renderImages(program.images)}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Country Description */}
-      <div className="bg-primary-50 py-12">
-        <div className="container-custom">
-          <div className="max-w-4xl mx-auto">
-            <p className="text-xl text-gray-700 leading-relaxed">
-              {language === 'en' ? country.description : country.descriptionAr}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Immigration Programs */}
-      <div className="py-16">
-        <div className="container-custom">
-          <h2 className="section-title mb-12">{t('country.programs')}</h2>
-
-          <motion.div
-            className="space-y-12"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {country.programs.map((program) => (
-              <motion.div
-                key={program.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100"
-                variants={itemVariants}
-              >
-                <div className="p-8">
-                  <h3 className="text-2xl font-semibold mb-4 text-primary-600">
-                    {language === 'en' ? program.title : program.titleAr}
-                  </h3>
-                  <p className="text-gray-700 mb-8 leading-relaxed">
-                    {language === 'en' ? program.description : program.descriptionAr}
-                  </p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* Requirements */}
-                    <div>
-                      <h4 className="flex items-center text-lg font-semibold mb-4 text-gray-800">
-                        <CheckCircle className="h-5 w-5 mr-2 text-primary-500" />
-                        {t('country.requirements')}
-                      </h4>
-                      <ul className="space-y-3">
-                        {(language === 'en' ? program.requirements : program.requirementsAr).map(
-                          (requirement, index) => (
-                            <li key={index} className="flex items-start">
-                              <span className="text-primary-500 mr-2">•</span>
-                              <span className="text-gray-700">{requirement}</span>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-
-                    {/* Benefits */}
-                    <div>
-                      <h4 className="flex items-center text-lg font-semibold mb-4 text-gray-800">
-                        <Award className="h-5 w-5 mr-2 text-primary-500" />
-                        {t('country.benefits')}
-                      </h4>
-                      <ul className="space-y-3">
-                        {(language === 'en' ? program.benefits : program.benefitsAr).map(
-                          (benefit, index) => (
-                            <li key={index} className="flex items-start">
-                              <span className="text-primary-500 mr-2">•</span>
-                              <span className="text-gray-700">{benefit}</span>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Timeline */}
-                  <div className="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                    <h4 className="flex items-center text-lg font-semibold mb-2 text-gray-800">
-                      <Clock className="h-5 w-5 mr-2 text-primary-500" />
-                      {t('country.timeline')}
-                    </h4>
-                    <p className="text-gray-700">
-                      {language === 'en' ? program.timeline : program.timelineAr}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Contact CTA */}
-          <div className="mt-16 bg-primary-500 text-white p-8 rounded-lg text-center">
-            <h3 className="text-2xl font-semibold mb-4">{t('country.contact')}</h3>
-            <p className="text-white/90 max-w-2xl mx-auto mb-6">
-              {language === 'en'
-                ? `Our immigration experts can guide you through the ${country.name} immigration process and help you choose the right program for your needs.`
-                : `يمكن لخبراء الهجرة لدينا إرشادك خلال عملية الهجرة إلى ${country.nameAr} ومساعدتك في اختيار البرنامج المناسب لاحتياجاتك.`}
-            </p>
-            <a href="/contact" className="btn bg-white text-primary-600 hover:bg-accent-500 hover:text-white">
-              {t('nav.contact')}
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default CountryPage;
+    visible
