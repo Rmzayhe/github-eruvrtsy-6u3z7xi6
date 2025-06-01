@@ -1,4 +1,4 @@
-import { FileText, Globe, Clock, Award } from 'lucide-react';
+import { FileText, Globe, Clock, Award } from 'lucide-react'; // هذه الاستيرادات صحيحة إذا كنت تستخدم أيقونات Lucide
 
 export interface Program {
   id: string;
@@ -13,8 +13,8 @@ export interface Program {
   timeline: string;
   timelineAr: string;
   images: {
-    work?: string[];
-    tourism?: string[];
+    work?: string[]; // يمكن أن يكون هذا الحقل موجودًا أو لا
+    tourism?: string[]; // يمكن أن يكون هذا الحقل موجودًا أو لا
   };
 }
 
@@ -24,7 +24,7 @@ export interface Country {
   nameAr: string;
   flagUrl: string;
   imageUrl: string;
-  capitalImageUrl?: string;
+  capitalImageUrl?: string; // يمكن أن يكون هذا الحقل موجودًا أو لا
   description: string;
   descriptionAr: string;
   programs: Program[];
@@ -39,14 +39,14 @@ export const countries: Country[] = [
     imageUrl: 'https://images.pexels.com/photos/4992831/pexels-photo-4992831.jpeg',
     capitalImageUrl: 'https://images.pexels.com/photos/442579/pexels-photo-442579.jpeg',
     description: 'Explore exciting job opportunities in Malta across various sectors.',
-    descriptionAr: 'اكتشف فرص عمل مثيرة في مالطا في مختلف القطاعات',
+    descriptionAr: 'اكتشف فرص عمل مثيرة في مالطا في مختلف القطاعات.', // تم إضافة نقطة في النهاية
     programs: [
       {
         id: 'malta-jobs',
         title: 'Malta Employment Program',
         titleAr: 'برنامج التوظيف في مالطا',
         description: 'Various job opportunities including positions in hospitality, driving, and service sectors.',
-        descriptionAr: 'فرص عمل متنوعة تشمل وظائف في مجالات الضيافة والسياقة وقطاعات الخدمات',
+        descriptionAr: 'فرص عمل متنوعة تشمل وظائف في مجالات الضيافة والسياقة وقطاعات الخدمات.', // تم إضافة نقطة في النهاية
         requirements: [
           'Valid passport',
           'Relevant work experience',
@@ -74,7 +74,7 @@ export const countries: Country[] = [
           'التطوير المهني'
         ],
         timeline: '2-3 months processing time',
-        timelineAr: '2-3 أشهر وقت المعالجة',
+        timelineAr: 'تستغرق المعالجة من 2 إلى 3 أشهر.', // تم تحسين الصياغة العربية
         images: {
           work: [
             'https://images.pexels.com/photos/3862627/pexels-photo-3862627.jpeg',
@@ -94,14 +94,14 @@ export const countries: Country[] = [
     imageUrl: 'https://images.pexels.com/photos/3862627/pexels-photo-3862627.jpeg',
     capitalImageUrl: 'https://images.pexels.com/photos/3862130/pexels-photo-3862130.jpeg',
     description: 'Discover exciting job opportunities in Romania with trusted companies and reputable employers.',
-    descriptionAr: 'اكتشف فرص عمل مميزة في رومانيا مع شركات موثوقة وأصحاب عمل ذوي سمعة طيبة',
+    descriptionAr: 'اكتشف فرص عمل مميزة في رومانيا مع شركات موثوقة وأصحاب عمل ذوي سمعة طيبة.', // تم إضافة نقطة في النهاية
     programs: [
       {
         id: 'romania-jobs',
         title: 'Romania Employment Program',
         titleAr: 'برنامج التوظيف في رومانيا',
         description: 'Various job opportunities across multiple sectors with trusted Romanian employers.',
-        descriptionAr: 'فرص عمل متنوعة في قطاعات متعددة مع أصحاب عمل رومانيين موثوقين',
+        descriptionAr: 'فرص عمل متنوعة في قطاعات متعددة مع أصحاب عمل رومانيين موثوقين.', // تم إضافة نقطة في النهاية
         requirements: [
           'Valid passport',
           'Clean criminal record',
@@ -133,7 +133,7 @@ export const countries: Country[] = [
           'فرص التطوير المهني'
         ],
         timeline: '2-3 months processing time',
-        timelineAr: '2-3 أشهر وقت المعالجة',
+        timelineAr: 'تستغرق المعالجة من 2 إلى 3 أشهر.', // تم تحسين الصياغة العربية
         images: {
           work: [
             'https://images.pexels.com/photos/2933243/pexels-photo-2933243.jpeg',
@@ -152,15 +152,19 @@ export const countries: Country[] = [
     flagUrl: 'https://flagcdn.com/ge.svg',
     imageUrl: 'https://images.pexels.com/photos/5273514/pexels-photo-5273514.jpeg',
     description: 'Experience an unforgettable journey with our comprehensive Georgia tourism program.',
-    descriptionAr: 'استمتع برحلة لا تُنسى مع خدمات متكاملة ومميزة في جورجيا',
+    descriptionAr: 'استمتع برحلة لا تُنسى مع خدمات متكاملة ومميزة في جورجيا.', // تم إضافة نقطة في النهاية
     programs: [
       {
         id: 'georgia-tourism',
         title: '5-Day Georgia Tourism Package',
-        titleAr: '✈️ برنامج جورجيا السياحي – 5 أيام أو أكثر 🇬🇪',
+        // تمت إزالة الرموز التعبيرية ✈️ و 🇬🇪 من titleAr هنا، حيث يمكن إدارتها بشكل أفضل في الواجهة الأمامية (UI) لضمان التناسق المرئي.
+        // إذا كنت تصر على وجودها هنا، فيمكنك إعادتها، لكن الأفضل فصل المحتوى عن العرض.
+        titleAr: 'برنامج جورجيا السياحي - 5 أيام أو أكثر',
         description: 'Comprehensive tourism package with all-inclusive services.',
+        // تم تنسيق descriptionAr كـ Template Literal مع أسطر جديدة للحفاظ على التنسيق المرئي.
+        // تأكد أن الواجهة الأمامية لديك تدعم عرض الأسطر الجديدة (\n) بشكل صحيح أو تستخدم مكون markdown.
         descriptionAr: `استمتع برحلة لا تُنسى مع خدمات متكاملة ومميزة:
-        
+
 ✅ الاستقبال والتوديع من وإلى المطار
 ✅ حجوزات فنادق راقية مع وجبة إفطار يومية مفتوحة
 ✅ جولات سياحية يومية حسب البرنامج
@@ -202,7 +206,7 @@ export const countries: Country[] = [
           'شامل جميع الضرائب'
         ],
         timeline: '5 days or more, flexible according to your preferences',
-        timelineAr: '5 أيام أو أكثر، مرنة حسب تفضيلاتك',
+        timelineAr: '5 أيام أو أكثر، مرنة حسب تفضيلاتك.', // تم إضافة نقطة في النهاية
         images: {
           tourism: [
             'https://images.pexels.com/photos/5273514/pexels-photo-5273514.jpeg',
@@ -221,14 +225,14 @@ export const countries: Country[] = [
     flagUrl: 'https://flagcdn.com/al.svg',
     imageUrl: 'https://images.pexels.com/photos/1549326/pexels-photo-1549326.jpeg',
     description: 'Explore opportunities in Albania with our comprehensive visa and employment services.',
-    descriptionAr: 'اكتشف الفرص في ألبانيا مع خدمات التأشيرات والتوظيف الشاملة لدينا',
+    descriptionAr: 'اكتشف الفرص في ألبانيا مع خدمات التأشيرات والتوظيف الشاملة لدينا.', // تم إضافة نقطة في النهاية
     programs: [
       {
         id: 'albania-visa-jobs',
         title: 'Albania Visa & Employment Program',
-        titleAr: 'برنامج تأشيرة وعمل ألبانيا',
+        titleAr: 'برنامج تأشيرة وعمل في ألبانيا', // تم تحسين الصياغة العربية
         description: 'Visa and work opportunities in Albania. Assistance with visa processing and job placement in various sectors for qualified applicants.',
-        descriptionAr: 'فرص التأشيرة والعمل في ألبانيا. المساعدة في إجراءات التأشيرة والتوظيف في قطاعات متنوعة للمتقدمين المؤهلين.',
+        descriptionAr: 'فرص التأشيرة والعمل في ألبانيا. نقدم المساعدة في إجراءات التأشيرة والتوظيف في قطاعات متنوعة للمتقدمين المؤهلين.', // تم تحسين الصياغة العربية
         requirements: [
           'Valid passport',
           'Visa application',
@@ -258,7 +262,7 @@ export const countries: Country[] = [
           'إرشاد صحي'
         ],
         timeline: '1-2 months processing time',
-        timelineAr: '1-2 شهر وقت المعالجة',
+        timelineAr: 'تستغرق المعالجة من 1 إلى 2 شهر.', // تم تحسين الصياغة العربية
         images: {
           work: [
             'https://images.pexels.com/photos/1549326/pexels-photo-1549326.jpeg'
