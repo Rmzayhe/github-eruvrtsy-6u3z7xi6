@@ -12,92 +12,45 @@ const CountryPage = () => {
 
   const country = getCountryById(id || '');
 
-  // حالة التحكم في صورة التكبير Modal
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  // State for Modal Image
+  const [modalImage, setModalImage] = useState<string | null>(null);
 
-  // هل الدولة رومانيا (لتفعيل السلايدر فقط للعمل)
-  const isRomania = country?.id.toLowerCase() === 'romania';
+  // استبدال صور العمل فقط لدولة رومانيا
+  const getUpdatedWorkImages = (countryId: string, workImages?: string[]) => {
+    if (countryId === 'romania') {
+      return [
+        'https://i.ibb.co/HTsjFyH0/Jobs-20250421-115827-0005.webp',
+        'https://i.ibb.co/k27bgqNT/Jobs-20250421-115827-0004.webp',
+        'https://i.ibb.co/GQBCXV4P/Jobs-20250421-115827-0000.webp',
+        'https://i.ibb.co/mLGTTdC/Jobs-20250421-115827-0002.webp',
+      ];
+    }
+    return workImages || [];
+  };
 
-  // دالة عرض الصور مع تعديل خاص لرومانيا (صور العمل بسلايدر أفقي + تكبير)
   const renderImages = (images?: { work?: string[]; tourism?: string[] }) => {
     if (!images) return null;
 
-    // لو رومانيا، نعرض صور العمل كسلايدر أفقي مع تكبير عند الضغط
-    if (isRomania && images.work) {
-      return (
-        <div className="space-y-10">
-          {/* Work Opportunities Slider */}
+    // استبدال صور العمل فقط إذا كانت رومانيا
+    const workImages = getUpdatedWorkImages(country?.id || '', images.work);
+
+    return (
+      <div className="space-y-12">
+        {/* صور العمل - افقي + تكبير */}
+        {workImages.length > 0 && (
           <div>
             <h3 className="text-xl font-semibold text-primary-600 mb-4">
               {language === 'en' ? 'Work Opportunities' : 'فرص العمل'}
             </h3>
-            <div className="flex space-x-4 overflow-x-auto scrollbar-thin scrollbar-thumb-primary-400 scrollbar-track-gray-100">
-              {images.work.map((img, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex-shrink-0 w-64 h-40 rounded-lg overflow-hidden shadow-lg cursor-pointer"
-                  onClick={() => setSelectedImage(img)}
-                >
-                  <img
-                    src={img}
-                    alt={`Work environment ${index + 1}`}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Tourism & Lifestyle (كما هي بدون تغيير) */}
-          {images.tourism && (
-            <div>
-              <h3 className="text-xl font-semibold text-primary-600 mb-4">
-                {language === 'en' ? 'Tourism & Lifestyle' : 'السياحة ونمط الحياة'}
-              </h3>
-              <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-                {images.tourism.map((img, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.2 }}
-                    className="relative h-64 rounded-lg overflow-hidden shadow-lg"
-                  >
-                    <img
-                      src={img}
-                      alt={`Tourism highlight ${index + 1}`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      );
-    }
-
-    // لباقي الدول عرض الصور كما كان (قديم)
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {images.work && (
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-primary-600">
-              {language === 'en' ? 'Work Opportunities' : 'فرص العمل'}
-            </h3>
-            <div className="grid gap-4">
-              {images.work.map((img, index) => (
+            <div className="flex overflow-x-auto space-x-4 pb-4">
+              {workImages.map((img, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.2 }}
-                  className="relative h-64 rounded-lg overflow-hidden shadow-lg"
+                  className="flex-shrink-0 w-64 h-40 rounded-lg overflow-hidden shadow-lg cursor-pointer"
+                  onClick={() => setModalImage(img)}
                 >
                   <img
                     src={img}
@@ -111,19 +64,21 @@ const CountryPage = () => {
           </div>
         )}
 
-        {images.tourism && (
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-primary-600">
+        {/* صور السياحة */}
+        {images.tourism && images.tourism.length > 0 && (
+          <div>
+            <h3 className="text-xl font-semibold text-primary-600 mb-4">
               {language === 'en' ? 'Tourism & Lifestyle' : 'السياحة ونمط الحياة'}
             </h3>
-            <div className="grid gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {images.tourism.map((img, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.2 }}
-                  className="relative h-64 rounded-lg overflow-hidden shadow-lg"
+                  className="relative h-64 rounded-lg overflow-hidden shadow-lg cursor-pointer"
+                  onClick={() => setModalImage(img)}
                 >
                   <img
                     src={img}
@@ -139,9 +94,6 @@ const CountryPage = () => {
       </div>
     );
   };
-
-  // إغلاق الـ Modal عند الضغط خارجه أو على زر الإغلاق
-  const closeModal = () => setSelectedImage(null);
 
   useEffect(() => {
     if (!country) {
@@ -170,15 +122,26 @@ const CountryPage = () => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-      },
+      transition: { type: 'spring', stiffness: 100 },
     },
   };
 
   return (
-    <div>
+    <>
+      {/* Modal for Image */}
+      {modalImage && (
+        <div
+          onClick={() => setModalImage(null)}
+          className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 cursor-pointer"
+        >
+          <img
+            src={modalImage}
+            alt="Enlarged view"
+            className="max-w-full max-h-full rounded-lg shadow-lg"
+          />
+        </div>
+      )}
+
       {/* Country Header */}
       <div
         className="relative h-80 bg-cover bg-center"
@@ -186,19 +149,22 @@ const CountryPage = () => {
       >
         <button
           onClick={() => navigate('/')}
-          className="flex items-center text-white mb-4 hover:text-accent-500 transition-colors"
+          className="absolute top-4 left-4 flex items-center text-white hover:text-accent-500 transition-colors"
         >
           <ArrowLeft className="mr-2" />
           {t('nav.home')}
+        </button>
+
+        <div className="absolute bottom-4 left-4 flex items-center space-x-4 text-white">
           <img
             src={country.flagUrl}
             alt={`${country.name} flag`}
-            className="w-16 h-16 rounded-full border-2 border-white shadow-lg ml-4"
+            className="w-16 h-16 rounded-full border-2 border-white shadow-lg"
           />
-          <h1 className="text-3xl font-bold ml-4">
+          <h1 className="text-4xl font-bold drop-shadow-md">
             {language === 'en' ? country.name : country.nameAr}
           </h1>
-        </button>
+        </div>
       </div>
 
       {/* Program Images */}
@@ -228,7 +194,12 @@ const CountryPage = () => {
         <div className="container-custom">
           <h2 className="section-title mb-12">{t('country.programs')}</h2>
 
-          <motion.div className="space-y-12" variants={containerVariants} initial="hidden" animate="visible">
+          <motion.div
+            className="space-y-12"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {country.programs.map((program) => (
               <motion.div
                 key={program.id}
@@ -251,12 +222,14 @@ const CountryPage = () => {
                         {t('country.requirements')}
                       </h4>
                       <ul className="space-y-3">
-                        {(language === 'en' ? program.requirements : program.requirementsAr).map((requirement, index) => (
-                          <li key={index} className="flex items-start">
-                            <span className="text-primary-500 mr-2">•</span>
-                            <span className="text-gray-700">{requirement}</span>
-                          </li>
-                        ))}
+                        {(language === 'en' ? program.requirements : program.requirementsAr).map(
+                          (requirement, index) => (
+                            <li key={index} className="flex items-start">
+                              <span className="text-primary-500 mr-2">•</span>
+                              <span className="text-gray-700">{requirement}</span>
+                            </li>
+                          )
+                        )}
                       </ul>
                     </div>
 
@@ -267,12 +240,14 @@ const CountryPage = () => {
                         {t('country.benefits')}
                       </h4>
                       <ul className="space-y-3">
-                        {(language === 'en' ? program.benefits : program.benefitsAr).map((benefit, index) => (
-                          <li key={index} className="flex items-start">
-                            <span className="text-primary-500 mr-2">•</span>
-                            <span className="text-gray-700">{benefit}</span>
-                          </li>
-                        ))}
+                        {(language === 'en' ? program.benefits : program.benefitsAr).map(
+                          (benefit, index) => (
+                            <li key={index} className="flex items-start">
+                              <span className="text-primary-500 mr-2">•</span>
+                              <span className="text-gray-700">{benefit}</span>
+                            </li>
+                          )
+                        )}
                       </ul>
                     </div>
                   </div>
@@ -304,34 +279,7 @@ const CountryPage = () => {
           </div>
         </div>
       </div>
-
-      {/* Modal لتكبير الصورة عند الضغط */}
-      {selectedImage && (
-        <div
-          onClick={closeModal}
-          className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 cursor-pointer"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="max-w-4xl max-h-[90vh] p-4 bg-white rounded-lg shadow-lg relative"
-          >
-            <button
-              onClick={closeModal}
-              className="absolute top-2 right-2 text-gray-700 hover:text-primary-600 text-2xl font-bold"
-              aria-label="Close modal"
-            >
-              ×
-            </button>
-            <img
-              src={selectedImage}
-              alt="Enlarged"
-              className="max-w-full max-h-[80vh] object-contain rounded"
-              loading="lazy"
-            />
-          </div>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
